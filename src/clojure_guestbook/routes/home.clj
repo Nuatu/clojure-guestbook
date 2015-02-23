@@ -3,6 +3,19 @@
             [clojure-guestbook.views.layout :as layout]
             [hiccup.form :refer :all]))
 
+(defn save-message [name message]
+  (cond
+     (empty? name)
+     (home name message "Come On Ya Big Dummy - Enter Your Name Fool")
+
+     (empty? message)
+     (home name message "What Good Are You - Enter a Message Fool")
+
+     :else
+     (do
+       (println name message)
+       (home))))
+
 (defn show-guests []
   [:ul.guests
    (for [{:keys [message name timestamp]}
@@ -31,5 +44,7 @@
      [:br]
      (submit-button "comment"))))
 
+
 (defroutes home-routes
-  (GET "/" [] (home)))
+  (GET "/" [] (home))
+  (POST "/" [name message] (save-message name message)))
